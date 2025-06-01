@@ -75,7 +75,7 @@ Insomnia para testar api
 
 bash
 # Clonar o repositório
-git clone https://github.com/seunome/sigo-sx.git
+git clone https://github.com/susanaildefonso19/sigo-sx.git
 cd sigo-sx/codigo
 
 # Instalar dependências do backend
@@ -83,14 +83,11 @@ cd backend
 npm install
 
 # Criar ficheiro de ambiente (.env)
-touch .env
-
-Adicionar as seguintes variáveis ao ficheiro .env:
-
-ini
-MONGODB_URI=<ligação à base de dados>
-JWT_SECRET=<chave_secreta>
-PORT=3000
+echo MONGODB_URI=mongodb://localhost:27017/sigo-sx >> .env
+echo PORT=3000 > .env
+echo JWT_SECRET=sua_chave_secreta >> .env   // usar a palavra-passe para apps do google
+echo EMAIL_USER=teu_email@gmail.com >> .env
+echo EMAIL_PASS=senha_do_email >> .env
 
 bash
 # Iniciar o servidor backend
