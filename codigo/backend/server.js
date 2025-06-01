@@ -1,5 +1,6 @@
 console.log("Server.js iniciado"); 
 
+const dotenv = require("dotenv"); dotenv.config(); // Carrega as variáveis de ambiente do arquivo .env
 const express = require('express'); // Importa o módulo express
 const cors = require('cors'); // Importa o módulo cors para permitir requisições de diferentes origens
 const connectDB = require('./services/database'); // Usa o serviço de ligação ao MongoDB

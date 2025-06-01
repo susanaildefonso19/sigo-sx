@@ -1,4 +1,5 @@
 require('dotenv').config(); // Importa o módulo dotenv para carregar variáveis de ambiente
+
 const mongoose = require('mongoose'); // Importa o módulo mongoose para interagir com o MongoDB
 
 const connectDB = async () => { 
