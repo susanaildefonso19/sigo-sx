@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <title>SIGO-SX</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+</head>
+<body>
+  <header class="header">
+    <img src="assets/images/logo.png" alt="Logo" class="logo" width=auto height=auto>
+    <span class="header-title">Sistema Integrado de Gestão de Ocorrências do Seixal</span>
+    <div class="login-container">
+    <form id="form-login">
+        <input type="email" id="login-email" name="email" placeholder="Email" required>
+        <input type="password" id="login-password" name="password" placeholder="Password" required>
+        <button type="submit" class="btn">Entrar</button>
+        <button type="button" class="btn-secondary" onclick="window.location.href='register.html'">Registar</button>
+        <a href="forgot.html" id="forgot-link" style="display:none; color:#346b8e; margin-top:5px; font-size:10pt;">Esqueceu a password?</a>
+    </form>
+    <div id="user-info" style="display:none;">
+      <span id="user-nome-header" style="font-weight:bold;"></span>
+      <button id="logout-btn" class="btn-secondary" style="margin-left:10px;">Logout</button>
+    </div>
+    </div>
+  </header>
+
+  <nav class="nav">
+    <ul class="menu">
+      <li onclick="window.location.href='index.html'">Início</li>
+      <li id="user-area-menu" style="display:none;" onclick="window.location.href='admin.html'">Admin</li>
+      <li id="user-area-menu" style="display:none;" onclick="window.location.href='user.html'">Área de Utilizador</li>
+      <li onclick="togglePopup('popup-registo')">Registar ocorrência</li>
+      <li onclick="togglePopup('popup-gestao')">Gestão de Ocorrências</li>
+      <li onclick="window.location.href='about.html'">Sobre</li>
+    </ul>
+  </nav>
+
+  <div id="map"></div>
+
+  <!-- Popup Registar -->
+  <div id="popup-registo" class="popup hidden">
+    <h3>Registar Ocorrência</h3>
+    <p>Clique no mapa para indicar a localização da ocorrência.</p>
+    <form id="form-registo">
+      <br>
+      <label>Data e Hora</label>
+      <input type="text" name="datahora" id="datahora" readonly>
+      <br>
+      <label>Localização</label>
+      <input type="text" name="localizacao" id="localizacao" readonly>
+      <br>
+      <label>Tipo de ocorrência</label>
+      <select name="tipo">
+        <option>Incêndio</option>
+        <option>Inundação</option>
+        <option>Deslizamento</option>
+        <option>Vandalismo</option>
+        <option>Acidente</option>
+        <option>Outro</option>
+      </select>
+      <br>
+      <label>Descrição</label>
+      <textarea name="descricao" rows="3" style="width:100%;" required></textarea>
+      <input type="hidden" name="lat">
+      <input type="hidden" name="lng">
+      <button type="submit" class="btn">Submeter</button>
+    </form>
+  </div>
+
+  <!-- Popup Gestão -->
+  <div id="popup-gestao" class="popup hidden">
+    <h3>Gestão de Ocorrências</h3>
+      <div class="filtros-ocorrencias">
+      <label for="filtro-por">Filtrar por</label>
+      <select id="filtro-por">
+        <option value="">Nenhum</option>
+        <option value="ano">Data</option>
+        <option value="tipo">Tipo</option>
+      </select>
+      <select id="filtro-ano" style="display:none;">
+        <option value="">Todos os anos</option>
+      </select>
+      <select id="filtro-tipo" style="display:none;">
+        <option value="">Todos os tipos</option>
+      </select>
+  </div>
+  <ul id="lista-ocorrencias" style="max-height:300px; overflow-y:auto; padding:10px;"></ul>
+  </div>
+
+
+  <div id="welcome-popup" class="popup" style="display:none; max-width:400px;">
+    <h3>Bem-vindo ao SIGO-SX!</h3>
+    <p>
+      Esta aplicação permite-lhe registar, visualizar e gerir 
+      ocorrências no concelho do Seixal.<br></p>
+    <p><b>Registe uma nova ocorrência clicando no mapa, consulte e filtre ocorrências existentes, aceda à sua área de utilizador e muito mais!</b><br></p>
+    <button id="close-welcome" class="btn" style="margin-top:10px;">Fechar</button>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@turf/turf@6/turf.min.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    
+  // Função para abrir popup com base no parâmetro da URL
+  document.addEventListener('DOMContentLoaded', function() {
+    const params = new URLSearchParams(window.location.search);
+    const popup = params.get('popup');
+    if (popup === 'registo') {
+      togglePopup('popup-registo');
+    }
+    if (popup === 'gestao') {
+      togglePopup('popup-gestao');
+    }
+  });
+</script>
+<script src="js/login.js"></script>
+
+
+</body>
+</html>

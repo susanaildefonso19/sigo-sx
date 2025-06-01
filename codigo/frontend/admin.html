@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin - SIGO-SX</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header class="header">
+    <img src="assets/images/logo.png" alt="Logo" class="logo" width=auto height=auto>
+    <span class="header-title">Ferramentas do admin</span>
+  </header>
+
+  <nav class="nav">
+    <ul class="menu">
+      <li onclick="window.location.href='index.html'">Início</li>
+      <li onclick="window.location.href='admin.html'">Admin</li>
+      <li onclick="window.location.href='user.html'">Área de Utilizador</li>
+      <li onclick="window.location.href='about.html'">Sobre</li>
+
+    </ul>
+  </nav>
+
+  <main class="content">
+    <h2>Ocorrências - Download</h2>
+    <div style="margin-bottom: 20px;">
+      <label for="filtro-por-export">Filtrar por</label>
+      <select id="filtro-por-export">
+        <option value="">Nenhum</option>
+        <option value="ano">Data</option>
+        <option value="tipo">Tipo</option>
+      </select>
+      <select id="filtro-ano-export" style="display:none;">
+        <option value="">Todos os anos</option>
+      </select>
+      <select id="filtro-tipo-export" style="display:none;">
+        <option value="">Todos os tipos</option>
+      </select>
+      <button onclick="exportOcorrencias('csv')" class="btn">Exportar CSV</button>
+      <button onclick="exportOcorrencias('geojson')" class="btn">Exportar GeoJSON</button>
+    </div>
+    <h2>Gestão de Utilizadores</h2>
+    <table id="users-table" border="1" style="width:100%; margin-bottom:40px;">
+      <thead>
+        <tr>
+          <th>Nome</th>
+          <th>Email</th>
+          <th>Tipo</th>
+          <th>Último Acesso</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </main>
+
+  <script>
+    const token = localStorage.getItem('token');
+
+    async function fetchUsers() {
+      const res = await fetch('http://localhost:3001/api/users', {
+        headers: { 'Authorization': 'Bearer ' + token }
+      });
+      const users = await res.json();
+      const tbody = document.querySelector('#users-table tbody');
+      tbody.innerHTML = '';
+      users.forEach(user => {
+        tbody.innerHTML += `
+          <tr>
+            <td>${user.nome}</td>
+            <td>${user.email}</td>
+            <td>
+              <select id="tipo-select-${user._id}">
+                <option value="user" ${user.tipo === 'user' ? 'selected' : ''}>user</option>
+                <option value="admin" ${user.tipo === 'admin' ? 'selected' : ''}>admin</option>
+              </select>
+            </td>
+            <td>${user.ultimoAcesso ? new Date(user.ultimoAcesso).toLocaleString('pt-PT') : '-'}</td>
+            <td>
+              <button class="btn" onclick="deleteUser('${user._id}')">Apagar</button>
+              <button class="btn" onclick="confirmChangeUserType('${user._id}', '${user.tipo}')">Alterar</button>
+            </td>
+          </tr>
+        `;
+      });
+    }
+
+    async function confirmChangeUserType(id, currentTipo) {
+      const select = document.getElementById(`tipo-select-${id}`);
+      const newTipo = select.value;
+      if (newTipo === currentTipo) {
+        alert('O tipo selecionado é igual ao atual.');
+        return;
+      }
+      if (currentTipo === 'admin' && newTipo === 'user') {
+        if (!confirm('Tem a certeza que deseja alterar este utilizador de ADMIN para USER? Esta ação pode remover privilégios de administração.')) return;
+      } else {
+        if (!confirm(`Tem a certeza que deseja alterar o tipo de utilizador para "${newTipo}"?`)) return;
+      }
+      await updateUserType(id, newTipo);
+    }
+
+    async function updateUserType(id, tipo) {
+      await fetch(`http://localhost:3001/api/users/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + token
+        },
+        body: JSON.stringify({ tipo })
+      });
+      fetchUsers();
+    }
+
+    async function deleteUser(id) {
+      if (!confirm('Tem a certeza que deseja apagar este utilizador?')) return;
+      await fetch(`http://localhost:3001/api/users/${id}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': 'Bearer ' + token }
+      });
+      fetchUsers();
+    }
+
+    function exportOcorrencias(format) {
+      const filtroPor = document.getElementById('filtro-por-export').value;
+      const tipo = document.getElementById('filtro-tipo-export').value;
+      const ano = document.getElementById('filtro-ano-export').value;
+      let url = `http://localhost:3001/api/export-${format}?`;
+      if (filtroPor === 'tipo' && tipo) url += `tipo=${encodeURIComponent(tipo)}&`;
+      if (filtroPor === 'ano' && ano) url += `ano=${encodeURIComponent(ano)}&`;
+
+      console.log('Export URL:', url); // <-- Add this line
+
+      fetch(url, {
+        headers: { 'Authorization': 'Bearer ' + token }
+      })
+      .then(response => {
+        if (!response.ok) throw new Error('Erro ao exportar ficheiro.');
+        return response.blob();
+      })
+      .then(blob => {
+        const a = document.createElement('a');
+        a.href = window.URL.createObjectURL(blob);
+        a.download = `ocorrencias.${format === 'geojson' ? 'geojson' : format === 'csv' ? 'csv' : 'gpkg'}`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+      })
+      .catch(err => {
+        alert(err.message);
+        // Optionally, log the error for debugging:
+        console.error(err);
+      });
+    }
+
+    // Preencher filtros dinamicamente como no index.html
+    document.addEventListener('DOMContentLoaded', async function() {
+      // Anos
+      const anoSelect = document.getElementById('filtro-ano-export');
+      if (anoSelect) {
+        const res = await fetch('http://localhost:3001/api/ocorrencias/anos');
+        const anos = await res.json();
+        anoSelect.innerHTML = '<option value="">Todos os anos</option>';
+        anos.forEach(ano => {
+          anoSelect.innerHTML += `<option value="${ano}">${ano}</option>`;
+        });
+      }
+      // Tipos
+      const tipoSelect = document.getElementById('filtro-tipo-export');
+      if (tipoSelect) {
+        const res = await fetch('http://localhost:3001/api/ocorrencias/tipos');
+        const tipos = await res.json();
+        tipoSelect.innerHTML = '<option value="">Todos os tipos</option>';
+        tipos.forEach(tipo => {
+          tipoSelect.innerHTML += `<option value="${tipo}">${tipo}</option>`;
+        });
+      }
+    });
+
+    // Mostrar/esconder selects conforme filtroPor
+    document.getElementById('filtro-por-export').addEventListener('change', function() {
+      document.getElementById('filtro-tipo-export').style.display = this.value === 'tipo' ? 'inline-block' : 'none';
+      document.getElementById('filtro-ano-export').style.display = this.value === 'ano' ? 'inline-block' : 'none';
+    });
+
+    fetchUsers();
+    window.updateUserType = updateUserType;
+    window.deleteUser = deleteUser;
+    window.confirmChangeUserType = confirmChangeUserType;
+  </script>
+</body>
+</html>

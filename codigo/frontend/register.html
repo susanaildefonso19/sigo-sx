@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <title>Registo de Utilizador - SIGO-SX</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header class="header">
+    <img src="assets/images/logo.png" alt="Logo" class="logo" width=auto height=auto>
+    <span class="header-title">Registo de Utilizador</span>
+  </header>
+
+  <nav class="nav">
+    <ul class="menu">
+      <li onclick="window.location.href='index.html'">Início</li>
+      <li onclick="window.location.href='about.html'">Sobre</li>
+    </ul>
+  </nav>
+
+  <main class="content">
+    <form class="form" id="registerForm">
+      <h2>Preencha os seus dados</h2>
+      <label>Nome</label>
+      <input type="text" name="nome" required>
+
+      <label>Email</label>
+      <input type="email" name="email" required>
+
+      <label>Password</label>
+      <input type="password" name="password" required>
+      <label>Confirme a Password</label>
+      <input type="password" name="confirmPassword" required>
+
+      <button type="submit" class="btn">Registar</button>
+      <button type="button" onclick="window.location.href='index.html'" class="btn">Voltar à página principal</button>
+    </form>
+  </main>
+
+    <script>
+    document.getElementById('registerForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const nome = this.nome.value;
+    const email = this.email.value;
+    const password = this.password.value;
+    const confirmPassword = this.confirmPassword.value;
+
+    if (password !== confirmPassword) {
+        alert('As passwords não coincidem.');
+        return;
+    }
+
+    const res = await fetch('http://localhost:3001/api/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nome, email, password })
+    });
+    const data = await res.json();
+    if (res.ok) {
+        alert('Registo efetuado com sucesso! \n\n Vai receber um email com a confirmação do registo.');
+        window.location.href = 'index.html';
+    } else {
+        alert(data.error || 'Erro no registo.');
+    }
+    });
+    </script>
+</body>
+</html>

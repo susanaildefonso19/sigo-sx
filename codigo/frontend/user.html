@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <title>Painel do Utilizador - SIGO-SX</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header class="header">
+    <img src="assets/images/logo.png" alt="Logo" class="logo" width=auto height=auto>
+    <span class="header-title">Área do Utilizador</span>
+  </header>
+
+  <nav class="nav">
+    <ul class="menu">
+      <li onclick="window.location.href='index.html'">Início</li>
+      <li onclick="window.location.href='index.html?popup=registo'">Registar ocorrência</li>
+      <li onclick="window.location.href='index.html?popup=gestao'">Gestão de Ocorrências</li>
+      <li onclick="window.location.href='about.html'">Sobre</li>
+    </ul>
+  </nav>
+
+  <main class="content">
+    <h2>Bem-vindo, <span id="user-nome"></span></h2>
+    <section>
+      <h3>Dados Pessoais</h3>
+      <p><b>Nome</b> <span id="user-nome-dados"></span></p>
+      <p><b>Email</b> <span id="user-email"></span></p>
+    </section>
+
+    <section>
+        <button class="btn" onclick="window.location.href='forgot.html'">Alterar Password</button>
+    </section>
+
+    <section>
+      <h3>Ocorrências Recentes</h3>
+      <ul class="ocorrencias-lista" id="ocorrencias-lista">
+        <!-- dados a serem preenchidos via JS -->
+      </ul>
+    </section>
+  </main>
+
+<script src="js/user.js"></script>
+</body>
+</html>
