@@ -40,7 +40,7 @@
       <button onclick="exportOcorrencias('geojson')" class="btn">Exportar GeoJSON</button>
     </div>
     <h2>Gestão de Utilizadores</h2>
-    <table id="users-table" border="1" style="width:100%; margin-bottom:40px;">
+    <table id="users-table" style="width:100%; margin-bottom:40px; text-align: left;">
       <thead>
         <tr>
           <th>Nome</th>
@@ -93,7 +93,7 @@
         return;
       }
       if (currentTipo === 'admin' && newTipo === 'user') {
-        if (!confirm('Tem a certeza que deseja alterar este utilizador de ADMIN para USER? Esta ação pode remover privilégios de administração.')) return;
+        if (!confirm('Tem a certeza que deseja alterar este utilizador de ADMIN para USER? \nEsta ação pode remover privilégios de administração.')) return;
       } else {
         if (!confirm(`Tem a certeza que deseja alterar o tipo de utilizador para "${newTipo}"?`)) return;
       }

@@ -48,7 +48,7 @@ app.get('/api/ocorrencias', async (req, res) => {
   }
 });
 
-// Get unique anos
+// Obtém os anos únicos das ocorrências
 app.get('/api/ocorrencias/anos', async (req, res) => {
   try {
     const anos = await Ocorrencia.distinct('ano');
@@ -59,7 +59,7 @@ app.get('/api/ocorrencias/anos', async (req, res) => {
   }
 });
 
-// Get unique tipos
+// Obtém os tipos únicos de ocorrências
 app.get('/api/ocorrencias/tipos', async (req, res) => {
   try {
     const tipos = await Ocorrencia.distinct('tipo');

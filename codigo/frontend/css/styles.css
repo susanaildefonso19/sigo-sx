@@ -62,7 +62,7 @@ body {
 .content {
     max-width: 800px;
     margin: 40px auto;
-    background: #fff;
+    background: #ffffff9d;
     color: #1a2330;
     padding: 30px;
     border-radius: 10px;
@@ -80,7 +80,7 @@ body {
     font-size: 0.9em;
     border-radius: 4px;
     color: #1a2330;
-    background: #ffffff;
+    background: #ffffff9d;
 }
 
 .ocorrencias-lista {
@@ -101,7 +101,7 @@ body {
   position: absolute;
   top: 155px;
   right: 30px;
-  background-color: #eaf3fa;
+  background-color: #eaf3fa9d;
   color: #1a2330;
   padding: 20px;
   border-radius: 12px;
@@ -131,7 +131,7 @@ body {
   border-radius: 4px;
   font-size: 10pt;
   color: #1a2330;
-  background: #f4f8fb;
+  background: #f4f8fb9d;
   border: 1px solid #b3c7d6;
 }
 
@@ -168,7 +168,7 @@ body {
   font-size: 10pt;
   border-radius: 4px;
   color: #1a2330;
-  background: #f4f8fb;
+  background: #f4f8fb9d;
   border: 1px solid #b3c7d6;
 }
 
