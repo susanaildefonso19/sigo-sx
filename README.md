@@ -85,7 +85,7 @@ npm install
 # Criar ficheiro de ambiente (.env)
 echo MONGO_URI=mongodb://localhost:27017/sigo-sx >> .env
 echo PORT=3001 > .env
-echo JWT_SECRET=sua_chave_secreta >> .env                  
+echo JWT_SECRET=chave_secreta >> .env                      # escolher uma chave secreta
 echo EMAIL_USER=teu_email@gmail.com >> .env                # usar email da google, preferencialmente
 echo EMAIL_PASS=senha_do_email >> .env                     # usar a palavra-passe para apps do google (NÃO USAR palavra-passe pessoal)
 
@@ -135,6 +135,8 @@ json
 ✅ Interface de administração
 🔄 Integração com GeoServer (em progresso)
 🔄 Integração de camadas de risco em WMS 
+🔄 Introdução de novo user type ‘manager’
+🔄 Outras melhorias
 
 👩‍💻 Autora
 Susana Ildefonso
