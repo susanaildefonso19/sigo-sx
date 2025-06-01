@@ -83,11 +83,11 @@ cd backend
 npm install
 
 # Criar ficheiro de ambiente (.env)
-echo MONGODB_URI=mongodb://localhost:27017/sigo-sx >> .env
-echo PORT=3000 > .env
-echo JWT_SECRET=sua_chave_secreta >> .env   // usar a palavra-passe para apps do google
-echo EMAIL_USER=teu_email@gmail.com >> .env
-echo EMAIL_PASS=senha_do_email >> .env
+echo MONGO_URI=mongodb://localhost:27017/sigo-sx >> .env
+echo PORT=3001 > .env
+echo JWT_SECRET=sua_chave_secreta >> .env                  
+echo EMAIL_USER=teu_email@gmail.com >> .env                # usar email da google, preferencialmente
+echo EMAIL_PASS=senha_do_email >> .env                     # usar a palavra-passe para apps do google (NÃO USAR palavra-passe pessoal)
 
 bash
 # Iniciar o servidor backend
@@ -109,7 +109,6 @@ O sistema utiliza JWT (JSON Web Tokens) para autenticação.
 Os tokens são gerados no login e devem ser incluídos no cabeçalho Authorization das requisições autenticadas:
 
 makefile
-
 Authorization: Bearer <token>
 
 🗃️ Exemplo de ocorrência (JSON)
