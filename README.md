@@ -143,4 +143,3 @@ NOVA IMS - Information Management School
 
 📄 Licença
 Este projeto é de uso académico.
-Caso pretenda reutilizar, adaptar ou expandir o sistema, por favor contacte a autora.
