@@ -20,6 +20,7 @@ async function sendMail({ to, subject, text, html }) {
       html
     });
     console.log(`Email enviado com sucesso para ${to}: ${info.messageId}`);
+    console.log('Detalhes do envio:', info);
     return info;
   } catch (error) {
     console.error('Erro ao enviar email:', error);
@@ -28,3 +29,12 @@ async function sendMail({ to, subject, text, html }) {
 } // Função para enviar emails, recebe um objeto com os detalhes do email
 
 module.exports = { sendMail }; // Exporta a função sendMail para ser usada em outros módulos
+
+
+transporter.verify(function(error, success) {
+  if (error) {
+    console.log('Erro na configuração do transporter:', error);
+  } else {
+    console.log('Servidor pronto para enviar mensagens');
+  }
+});
