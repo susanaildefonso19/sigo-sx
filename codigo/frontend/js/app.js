@@ -1,6 +1,11 @@
-console.log('App.js loaded');
+console.log('SIGO-SX - Sistema de Informação Geográfica do Concelho de Seixal');
 console.log('Versão 1.0.0');
 console.log('Desenvolvido por: Susana Ildefonso');
+console.log('NOVAIMS - Universidade Nova de Lisboa');
+console.log('A aplicação SIGO-SX permite registar ocorrências no concelho de Seixal e visualizar informações geográficas relevantes.');
+console.log('Utiliza Leaflet para visualização de mapas e GeoServer para camadas geográficas.');
+console.log('JavaScript, HTML e CSS são usados para a interface do utilizador.');
+
 
 // Define os limites do mapa para a área de Seixal
 const bounds = [
