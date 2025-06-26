@@ -44,6 +44,64 @@ exports.registerUser = async (req, res) => {
   }
 };
 
+
+const crypto = require('crypto');
+
+exports.redefinePassword = async (req, res) => {
+  try {
+    const { nome, email } = req.body;
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ error: 'Email já registado.' });
+    }
+
+    // Gerar token de definição de password
+    const resetToken = crypto.randomBytes(32).toString('hex');
+    const resetTokenExpires = Date.now() + 1000 * 60 * 60; // 1 hora
+
+    const user = new User({ nome, email, resetToken, resetTokenExpires });
+    await user.save();
+
+    // Enviar email com link para definir password
+    const link = `http://localhost:3000/setPassword.html?token=${resetToken}&email=${encodeURIComponent(email)}`;
+    await emailService.sendMail({
+      to: email,
+      subject: 'Defina a sua password - SIGO-SX',
+      text: `Olá ${nome},\n\nClique no link para definir a sua password:\n${link}\n\nSe não foi você, ignore este email.`,
+      html: `<p>Olá <b>${nome}</b>,<br>Clique no link para definir a sua password:<br><a href="${link}">${link}</a></p>`
+    });
+
+    res.status(201).json({ msg: 'Registo efetuado. Verifique o seu email para definir a password.' });
+  } catch (err) {
+    res.status(400).json({ error: 'Erro ao registar utilizador.' });
+  }
+};
+
+exports.setPassword = async (req, res) => {
+  const { email, token, password } = req.body;
+  try {
+    const user = await User.findOne({ email, resetToken: token, resetTokenExpires: { $gt: Date.now() } });
+    if (!user) {
+      return res.status(400).json({ error: 'Token inválido ou expirado.' });
+    }
+    user.password = await bcrypt.hash(password, 10);
+    user.resetToken = undefined;
+    user.resetTokenExpires = undefined;
+    await user.save();
+
+    // Enviar email de confirmação
+    await emailService.sendMail({
+      to: email,
+      subject: 'Password definida com sucesso - SIGO-SX',
+      text: `Olá,\n\nA sua password foi definida com sucesso.\n\nSIGO-SX Team`
+    });
+
+    res.json({ msg: 'Password definida com sucesso.' });
+  } catch (err) {
+    res.status(500).json({ error: 'Erro ao definir password.' });
+  }
+};
+
 // Login do utilizador
 exports.loginUser = async (req, res) => {
   try {
@@ -145,24 +203,30 @@ exports.exportOcorrenciasGeoJSON = async (req, res) => {
 // Reset de password
 // Atualiza a password com nova encriptação.
 exports.resetPassword = async (req, res) => {
-  const { email, newPassword } = req.body;
+  const { email } = req.body;
+  const crypto = require('crypto');
   try {
     const user = await User.findOne({ email });
     if (!user) {
-      return res.status(404).json({ error: 'Email não encontrado.' });
+      // Não revelar se o email existe
+      return res.json({ msg: 'Se o email existir, irá receber um link para recuperar a password.' });
     }
-    // Gera o hash da nova password
-    user.password = await bcrypt.hash(newPassword, 10);
+    const resetToken = crypto.randomBytes(32).toString('hex');
+    user.resetToken = resetToken;
+    user.resetTokenExpires = Date.now() + 1000 * 60 * 60; // 1 hora
     await user.save();
-    // Envia email de confirmação
+
+    const link = `http://localhost:3000/setPassword.html?token=${resetToken}&email=${encodeURIComponent(email)}`;
     await emailService.sendMail({
       to: email,
-      subject: 'Password alterada - SIGO-SX',
-      text: `Olá,\n\nA sua password foi alterada com sucesso.\n\nSe não foi você, contacte o suporte.\n\nSIGO-SX Team`,
+      subject: 'Recuperação de password - SIGO-SX',
+      text: `Clique no link para definir uma nova password: ${link}`,
+      html: `<p>Clique no link para definir uma nova password:<br><a href="${link}">${link}</a></p>`
     });
-    res.json({ message: 'Password alterada com sucesso. Email de confirmação enviado.' });
+
+    res.json({ msg: 'Se o email existir, irá receber um link para recuperar a password.' });
   } catch (err) {
-    res.status(500).json({ error: 'Erro ao enviar email de confirmação.' });
+    res.status(500).json({ error: 'Erro ao enviar email de recuperação.' });
   }
 };
 

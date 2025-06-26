@@ -33,4 +33,7 @@ router.put('/users/:id', authMiddleware, userController.updateUser);
 // Apagar utilizador
 router.delete('/users/:id', authMiddleware, userController.deleteUser);
 
+// Definir password
+router.post('/definir-password', userController.setPassword);
+
 module.exports = router; // Exporta o roteador para uso no servidor principal

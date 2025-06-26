@@ -7,7 +7,9 @@ const userSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   tipo: { type: String, enum: ['user', 'admin'], default: 'user' },
-  ultimoAcesso: { type: Date }
+  ultimoAcesso: { type: Date },
+  resetToken: {type: String},
+  resetTokenExpires: {type: Date},
 });
 
 const User = mongoose.model('User', userSchema); // Modelo de Utilizador
