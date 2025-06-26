@@ -21,9 +21,21 @@ exports.registerUser = async (req, res) => {
     // Enviar email de confirmação
     await emailService.sendMail({
       to: email,
-      subject: 'Confirmação de registo SIGO-SX',
+      subject: '🎉 Bem-vindo(a) à SIGO-SX!',
       text: `Olá ${nome},\n\nO seu registo foi efetuado com sucesso!`,
-      html: `<p>Olá <b>${nome}</b>,<br>O seu registo foi efetuado com sucesso!</p>`
+      html: `<p>Olá <b>${nome}</b>,</p>
+            <p>Obrigado por se registar na <b>SIGO-SX</b> – a sua nova ferramenta de apoio à gestão e planeamento territorial!</p>
+            <p>A partir de agora, tem acesso a uma plataforma desenvolvida para facilitar a análise, partilha e visualização de informação geográfica de forma simples e eficiente.</p>
+            <p><b>Estamos muito contentes por tê-lo connosco e esperamos que a SIGO-SX seja um recurso valioso no seu dia a dia profissional.</b></p>
+            <p>🔹 <b>Comece já:</b> Aceda à sua área pessoal, explore os mapas interativos e descubra as funcionalidades disponíveis.<br>
+            🔹 <b>Precisa de ajuda?</b> Consulte o nosso centro de suporte ou contacte-nos diretamente através da aplicação.<br>
+            🔹 <b>Fique atento(a):</b> Em breve, receberá novidades, dicas de utilização e atualizações diretamente no seu e-mail.</p>
+            <p>Se tiver alguma dúvida ou sugestão, não hesite em entrar em contacto connosco.</p>
+            <p><b>Bem-vindo(a) à comunidade SIGO-SX!</b></p>
+            <p>Com os melhores cumprimentos,
+            
+            <br>A equipa SIGO-SX</p>`
+
     });
 
     res.status(201).json({ msg: 'Utilizador registado com sucesso.' });
