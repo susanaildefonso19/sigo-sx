@@ -24,8 +24,8 @@ const map = L.map('map', {
   zoomSnap: 0.1,
 }).fitBounds(bounds);
 
-
-L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+// Camada do OSM em greyscale
+const base = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
   attribution: '&copy; OpenStreetMap contributors &copy; CARTO'
 }).addTo(map); // Camada base do mapa com CartoDB Light
 
@@ -49,8 +49,10 @@ const freguesia = L.tileLayer.wms("http://localhost:8080/geoserver/seixal/wms", 
   layers: 'seixal:freguesias', // workspace:seixal, nome da camada: freguesias
   format: 'image/png',
   transparent: true,
-  attribution: 'GeoServer - SIGO-SX'
+  attribution: 'GeoServer - SIGO-SX',
 }).addTo(map);
+
+L.control.layers(null, { "Limite de freguesias": freguesia }).addTo(map);
 
 const concelho = L.tileLayer.wms("http://localhost:8080/geoserver/seixal/wms", {
   layers: 'seixal:seixal', // workspace:seixal, nome da camada: seixal
@@ -58,7 +60,6 @@ const concelho = L.tileLayer.wms("http://localhost:8080/geoserver/seixal/wms", {
   transparent: true,
   attribution: 'GeoServer - SIGO-SX'
 }).addTo(map);
-
 
 let marker = null;
 let concelhoGeoJSON = null;
