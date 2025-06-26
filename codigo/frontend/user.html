@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <title>Painel do Utilizador - SIGO-SX</title>
   <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </head>
 <body>
   <header class="header">
@@ -11,14 +13,14 @@
     <span class="header-title">Área do Utilizador</span>
   </header>
 
-  <nav class="nav">
-    <ul class="menu">
-      <li onclick="window.location.href='index.html'">Início</li>
-      <li onclick="window.location.href='index.html?popup=registo'">Registar ocorrência</li>
-      <li onclick="window.location.href='index.html?popup=gestao'">Gestão de Ocorrências</li>
-      <li onclick="window.location.href='about.html'">Sobre</li>
-    </ul>
-  </nav>
+<nav class="nav">
+  <ul class="menu" id="menu-list">
+    <li onclick="window.location.href='index.html'">Início</li>
+    <li onclick="window.location.href='index.html?popup=registo'">Registar ocorrência</li>
+    <li onclick="window.location.href='index.html?popup=gestao'">Gestão de Ocorrências</li>
+    <li onclick="window.location.href='about.html'">Sobre</li>
+  </ul>
+</nav>
 
   <main class="content">
     <h2>Bem-vindo, <span id="user-nome"></span></h2>
@@ -32,13 +34,19 @@
         <button class="btn" onclick="window.location.href='forgot.html'">Alterar Password</button>
     </section>
 
-    <section>
+    <section id="ocorrencias-recentes">
       <h3>Ocorrências Recentes</h3>
       <ul class="ocorrencias-lista" id="ocorrencias-lista">
         <!-- dados a serem preenchidos via JS -->
       </ul>
     </section>
   </main>
+  
+<div id="popup-mapa" class="popup hidden">
+  <button id="fechar-popup-mapa" class="btn" style="float:right; margin-bottom:10px;">Fechar</button>
+  <div id="info-popup-mapa" style="margin-bottom:10px; font-size:12pt; font-weight:bold; text-align:left;"></div>
+  <div id="map-popup" style="width:100%; height:300px;"></div>
+</div>
 
 <script src="js/user.js"></script>
 </body>

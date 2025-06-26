@@ -89,8 +89,26 @@ body {
 }
 
 .ocorrencias-lista {
-    list-style-type: disc;
-    padding-left: 20px;
+    list-style-type: none; /* Remover pontos */
+    padding-left: 0;
+    background: rgba(20, 69, 82, 0.10);
+}
+.ocorrencias-lista li {
+    font-size: 0.95em; /* Letra mais pequena */
+    color: rgb(54, 54, 54);
+    border-radius: 6px;
+    margin-bottom: 6px;
+    padding: 6px 10px;
+    line-height: 1.5; /* Espaçamento entre linhas */
+}
+.ocorrencia-link {
+    color: #20506a;
+    text-decoration: underline;
+    cursor: pointer;
+    font-weight: bold;
+}
+.ocorrencia-link:hover {
+    color: #35727e;
 }
 
 #map {
@@ -263,6 +281,50 @@ body {
 /* Texto secundário */
 .secondary-text, .popup .info, .form .info, .menu .info {
   color: #b0bfc6; /* Cinzento médio - ajustado */
+}
+
+section#ocorrencias-recentes {
+    margin-top: 40px; /* Ajusta o valor conforme necessário */
+}
+
+/* Pop-up do mapa: posição automática e responsiva, fundo branco translúcido */
+#popup-mapa {
+  position: fixed;
+  top: 10vh;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90vw;
+  max-width: 400px;
+  height: 350px;
+  z-index: 2000;
+  background: rgba(255, 255, 255, 0.50); /* Branco com transparência - ajustado */
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(89, 182, 232, 0.15);
+  padding: 16px 10px 10px 10px;
+  display: none;
+  cursor: default;
+}
+#popup-mapa:not(.hidden) {
+  display: block;
+}
+@media (max-width: 500px) {
+  #popup-mapa {
+    top: 2vh;
+    height: 60vh;
+    min-width: 90vw;
+    max-width: 98vw;
+    padding: 8px 2vw 8px 2vw;
+  }
+  #map-popup {
+    height: 40vh !important;
+  }
+}
+
+#info-popup-mapa {
+  font-size: 12pt;
+  font-weight: bold;
+  text-align: left;
+  margin-bottom: 10px;
 }
 
 /* --- Fim das alterações de paleta para Petrol Blue, Grey e White --- */
