@@ -1,4 +1,4 @@
-console.log("Server.js iniciado"); 
+console.log("Server.js a correr com sucesso"); 
 
 const dotenv = require("dotenv"); dotenv.config(); // Carrega as variáveis de ambiente do arquivo .env
 const express = require('express'); // Importa o módulo express
@@ -22,6 +22,7 @@ app.use('/api', userRoutes);
 app.post('/api/ocorrencias', async (req, res) => {
   try {
     // Verifica se o ano foi fornecido, caso contrário, extrai do campo datahora
+    console.log('🔍 API para [ocorrencias] a funcionar');
     if (!req.body.ano && req.body.datahora) {
       req.body.ano = new Date(req.body.datahora).getFullYear();
     }
@@ -29,6 +30,7 @@ app.post('/api/ocorrencias', async (req, res) => {
     await ocorrencia.save();
     res.status(201).json(ocorrencia);
   } catch (err) {
+    console.error('❌ Erro ao obter ocorrencias:', err);
     res.status(400).json({ msg: 'Erro ao registar ocorrência.' });
   }
 });
@@ -40,7 +42,7 @@ app.get('/api/ocorrencias', async (req, res) => {
     if (req.query.tipo) filtro.tipo = { $regex: new RegExp('^' + req.query.tipo + '$', 'i') }; // case-insensitive
     if (req.query.ano) filtro.ano = Number(req.query.ano);
 
-    console.log('Filtro usado:', filtro); // <-- ADD THIS LINE
+    console.log('Filtro usado:', filtro); // Log do filtro usado para depuração
 
     const ocorrencias = await Ocorrencia.find(filtro);
     res.json(ocorrencias);
@@ -52,7 +54,7 @@ app.get('/api/ocorrencias', async (req, res) => {
 // Obtém os anos únicos das ocorrências
 app.get('/api/ocorrencias/anos', async (req, res) => {
   try {
-    console.log('🔍 GET /api/ocorrencias/anos chamado');
+    console.log('🔍 API para [anos] a funcionar');
     const anos = await Ocorrencia.distinct('ano');
     console.log('📆 Anos encontrados:', anos);
     anos.sort((a, b) => b - a); // Sort descending
@@ -66,10 +68,13 @@ app.get('/api/ocorrencias/anos', async (req, res) => {
 // Obtém os tipos únicos de ocorrências
 app.get('/api/ocorrencias/tipos', async (req, res) => {
   try {
+    console.log('🔍 API para [tipos] a funcionar');
     const tipos = await Ocorrencia.distinct('tipo');
+    console.log('📆 Tipos encontrados:', tipos);
     tipos.sort();
     res.json(tipos);
   } catch (err) {
+    console.error('❌ Erro ao obter tipos:', err);
     res.status(500).json({ error: 'Erro ao obter tipos.' });
   }
 });
@@ -78,6 +83,7 @@ app.get('/api/ocorrencias/tipos', async (req, res) => {
 app.get('/', (req, res) => {
   console.log('GET / chamada');
   res.send('API SIGO-SX em funcionamento!');
+  console.log('🔍 API SIGO-SX a funcionar');
 });
 
 const PORT = 3001; // Define a porta onde o servidor irá escutar
