@@ -12,13 +12,15 @@ const transporter = nodemailer.createTransport({
 
 async function sendMail({ to, subject, text, html }) {
   try {
-    return await transporter.sendMail({
+    const info = await transporter.sendMail({
       from: '"SIGO-SX" <susanaildefonso19@gmail.com>',
       to,
       subject,
       text,
       html
     });
+    console.log(`Email enviado com sucesso para ${to}: ${info.messageId}`);
+    return info;
   } catch (error) {
     console.error('Erro ao enviar email:', error);
     throw error;
