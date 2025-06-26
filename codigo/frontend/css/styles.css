@@ -101,7 +101,7 @@ body {
   position: absolute;
   top: 155px;
   right: 30px;
-  background-color: #eaf3fa9d;
+  background-color: #eaf3fa78;
   color: #1a2330;
   padding: 20px;
   border-radius: 12px;
@@ -131,7 +131,7 @@ body {
   border-radius: 4px;
   font-size: 10pt;
   color: #1a2330;
-  background: #f4f8fb9d;
+  background: #f4f8fb6d;
   border: 1px solid #b3c7d6;
 }
 
@@ -235,7 +235,7 @@ body {
 #lista-ocorrencias li {
   font-size: 1rem;
   color: #1a2330;
-  background: #eaf3fa;
+  background: #eaf3fa00;
   border-radius: 6px;
   margin-bottom: 6px;
   padding: 6px 10px;
@@ -250,7 +250,7 @@ body {
   position: fixed;
   z-index: 2000;
   display: none;
-  background: #eaf3fa;
+  background: #eaf3fa9b;
   border-radius: 12px;
   box-shadow: 0 2px 12px rgba(58,80,107,0.15);
 }
