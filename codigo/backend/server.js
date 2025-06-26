@@ -52,10 +52,13 @@ app.get('/api/ocorrencias', async (req, res) => {
 // Obtém os anos únicos das ocorrências
 app.get('/api/ocorrencias/anos', async (req, res) => {
   try {
+    console.log('🔍 GET /api/ocorrencias/anos chamado');
     const anos = await Ocorrencia.distinct('ano');
+    console.log('📆 Anos encontrados:', anos);
     anos.sort((a, b) => b - a); // Sort descending
     res.json(anos);
   } catch (err) {
+    console.error('❌ Erro ao obter anos:', err);
     res.status(500).json({ error: 'Erro ao obter anos.' });
   }
 });
