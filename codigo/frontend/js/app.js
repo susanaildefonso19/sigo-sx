@@ -292,35 +292,29 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 
-document.addEventListener('DOMContentLoaded', function() {
-    // Só mostra se ainda não foi visto neste browser
-    if (!sessionStorage.getItem('sigo_welcome_shown')) {
-      const popup = document.getElementById('welcome-popup');
-      if (popup) popup.style.display = 'block';
-      document.getElementById('close-welcome').onclick = function() {
-        popup.style.display = 'none';
-        sessionStorage.setItem('sigo_welcome_shown', '1');
-      };
-    }
-  });
-
 document.addEventListener('DOMContentLoaded', async function () {
+  // Popup de boas-vindas
+  if (!sessionStorage.getItem('sigo_welcome_shown')) {
+    const popup = document.getElementById('welcome-popup');
+    if (popup) popup.style.display = 'block';
+    document.getElementById('close-welcome').onclick = function() {
+      popup.style.display = 'none';
+      sessionStorage.setItem('sigo_welcome_shown', '1');
+    };
+  }
+
   // Populate anos
   const anoSelect = document.getElementById('filtro-ano');
   if (anoSelect) {
     try {
       const res = await fetch('http://localhost:3001/api/ocorrencias/anos');
-
       if (!res.ok) {
         throw new Error(`Erro na resposta: ${res.status}`);
       }
-
       const anos = await res.json();
-
       if (!Array.isArray(anos)) {
         throw new Error('Resposta não é um array!');
       }
-
       anoSelect.innerHTML = '<option value="">Todos os anos</option>';
       anos.forEach(ano => {
         anoSelect.innerHTML += `<option value="${ano}">${ano}</option>`;
@@ -330,16 +324,26 @@ document.addEventListener('DOMContentLoaded', async function () {
       anoSelect.innerHTML = '<option value="">Erro ao carregar anos</option>';
     }
   }
-});
 
   // Populate tipos
   const tipoSelect = document.getElementById('filtro-tipo');
   if (tipoSelect) {
-    const res = await fetch('http://localhost:3001/api/ocorrencias/tipos');
-    const tipos = await res.json();
-    tipoSelect.innerHTML = '<option value="">Todos os tipos</option>';
-    tipos.forEach(tipo => {
-      tipoSelect.innerHTML += `<option value="${tipo}">${tipo}</option>`;
-    });
+    try {
+      const res = await fetch('http://localhost:3001/api/ocorrencias/tipos');
+      if (!res.ok) {
+        throw new Error(`Erro na resposta: ${res.status}`);
+      }
+      const tipos = await res.json();
+      if (!Array.isArray(tipos)) {
+        throw new Error('Resposta não é um array!');
+      }
+      tipoSelect.innerHTML = '<option value="">Todos os tipos</option>';
+      tipos.forEach(tipo => {
+        tipoSelect.innerHTML += `<option value="${tipo}">${tipo}</option>`;
+      });
+    } catch (err) {
+      console.error('❌ Erro ao carregar tipos:', err);
+      tipoSelect.innerHTML = '<option value="">Erro ao carregar tipos</option>';
+    }
   }
 });
