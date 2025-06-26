@@ -304,17 +304,33 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
 
-document.addEventListener('DOMContentLoaded', async function() {
+document.addEventListener('DOMContentLoaded', async function () {
   // Populate anos
   const anoSelect = document.getElementById('filtro-ano');
   if (anoSelect) {
-    const res = await fetch('http://localhost:3001/api/ocorrencias/anos');
-    const anos = await res.json();
-    anoSelect.innerHTML = '<option value="">Todos os anos</option>';
-    anos.forEach(ano => {
-      anoSelect.innerHTML += `<option value="${ano}">${ano}</option>`;
-    });
+    try {
+      const res = await fetch('http://localhost:3001/api/ocorrencias/anos');
+
+      if (!res.ok) {
+        throw new Error(`Erro na resposta: ${res.status}`);
+      }
+
+      const anos = await res.json();
+
+      if (!Array.isArray(anos)) {
+        throw new Error('Resposta não é um array!');
+      }
+
+      anoSelect.innerHTML = '<option value="">Todos os anos</option>';
+      anos.forEach(ano => {
+        anoSelect.innerHTML += `<option value="${ano}">${ano}</option>`;
+      });
+    } catch (err) {
+      console.error('❌ Erro ao carregar anos:', err);
+      anoSelect.innerHTML = '<option value="">Erro ao carregar anos</option>';
+    }
   }
+});
 
   // Populate tipos
   const tipoSelect = document.getElementById('filtro-tipo');
