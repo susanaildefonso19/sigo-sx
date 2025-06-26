@@ -1,5 +1,5 @@
 console.log('SIGO-SX - Sistema de Informação Geográfica do Concelho de Seixal');
-console.log('Versão 1.2.1');
+console.log('Versão 1.2.2');
 console.log('Desenvolvido por: Susana Ildefonso');
 console.log('NOVAIMS - Universidade Nova de Lisboa');
 console.log('A aplicação SIGO-SX permite registar ocorrências no concelho de Seixal e visualizar informações geográficas relevantes.');
