@@ -7,25 +7,28 @@ const { Parser } = require('json2csv'); // Permite converter dados JSON para CSV
 const emailService = require('../services/emailService'); //Serviço responsável por enviar emails, como na recuperação de password.
 
 // Registar utilizador
-exports.registerUser = async (req, res) => { //Função para criar novo utilizador.
+exports.registerUser = async (req, res) => {
   try {
-    const { nome, email, password } = req.body; // Extrai os dados do corpo do pedido.
-    const existingUser = await User.findOne({ email }); // Verifica se o utilizador já existe
+    const { nome, email, password } = req.body;
+    const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(400).json({ error: 'Email já registado.' });
-    } // Se existir, retorna erro.
-    
-    const hashedPassword = await bcrypt.hash(password, 10); // Gera o hash da password
-     
-    const user = new User({
-      nome,
-      email,
-      password: hashedPassword
+    }
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const user = new User({ nome, email, password: hashedPassword });
+    await user.save();
+
+    // Enviar email de confirmação
+    await emailService.sendMail({
+      to: email,
+      subject: 'Confirmação de registo SIGO-SX',
+      text: `Olá ${nome},\n\nO seu registo foi efetuado com sucesso!`,
+      html: `<p>Olá <b>${nome}</b>,<br>O seu registo foi efetuado com sucesso!</p>`
     });
-    await user.save(); // Cria e guarda o novo utilizador na base de dados.
-    res.status(201).json({ msg: 'Utilizador registado com sucesso.' }); // Se tudo correr bem, retorna mensagem de sucesso.
+
+    res.status(201).json({ msg: 'Utilizador registado com sucesso.' });
   } catch (err) {
-    res.status(400).json({ error: 'Erro ao registar utilizador.' }); // Se ocorrer um erro, retorna mensagem de erro.
+    res.status(400).json({ error: 'Erro ao registar utilizador.' });
   }
 };
 
