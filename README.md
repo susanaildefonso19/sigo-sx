@@ -74,7 +74,7 @@ Insomnia para testar api
 🟠 Passos:
 
 bash
-# Clonar o repositório
+# Clonar o repositório através do Git
 git clone https://github.com/susanaildefonso19/sigo-sx.git
 cd sigo-sx/codigo
 
