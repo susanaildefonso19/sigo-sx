@@ -20,7 +20,7 @@
 ## 🧱 Estrutura do Projeto
 
 ```bash
-progweb/
+sigo-sx/
 ├── codigo/
 │   ├── backend/                # API Node.js (Express)
 │   │   ├── middlewares/        # Middleware (ex: verificação de token)
