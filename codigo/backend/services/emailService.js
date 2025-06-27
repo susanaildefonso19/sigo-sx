@@ -1,13 +1,13 @@
-const nodemailer = require('nodemailer'); // Importa o módulo nodemailer para enviar emails
+const nodemailer = require('nodemailer');
+require('dotenv').config(); // Adiciona esta linha
 
 // Configuração do transportador de email usando o serviço Gmail
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
-    user: 'susanaildefonso19@gmail.com',
-    pass: 'omdt tcgg sofl nmul'
+    user: process.env.EMAIL_USER, // Usa variável de ambiente
+    pass: process.env.EMAIL_PASS  // Usa variável de ambiente
   }
-  
 }); // Configura o serviço de email e as credenciais de autenticação
 
 async function sendMail({ to, subject, text, html }) {
